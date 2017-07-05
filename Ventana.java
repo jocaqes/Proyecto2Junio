@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -30,14 +32,17 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
     private List<JPanel> lista_pestanya;
     private List<JScrollPane> lista_jscroll;
     private int seleccion;
+    private List<Pestanya> lista_tab;//nuevo
     
     
     public Ventana() {
+        super("AGE");//titulo de la aplicacion
         initComponents();
-        this.analisis_lexico = new AnalisisLexico();//debug
+        //this.analisis_lexico = new AnalisisLexico();//debug
         lista_texto = new ArrayList<>();
         lista_pestanya = new ArrayList<>();
         lista_jscroll = new ArrayList<>();
+        lista_tab = new ArrayList<>();
         seleccion = -1;
         //this.analisis_sintactico = new AnalisisSintactico();
         anyadirAcciones();
@@ -47,6 +52,10 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
     private void anyadirAcciones(){
         this.iniciar_Analisis.addActionListener(this);
         this.abrir_archivo.addActionListener(this);
+        this.menu_nuevo.addActionListener(this);
+        this.boton_graficar.addActionListener(this);
+        this.guardar_archivo.addActionListener(this);
+        this.reporte_tokens.addActionListener(this);
     }
     
     
@@ -66,12 +75,19 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
         lista_componentes = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         lista_producciones = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        boton_graficar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         abrir_archivo = new javax.swing.JMenuItem();
+        guardar_archivo = new javax.swing.JMenuItem();
+        menu_nuevo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         iniciar_Analisis = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        reporte_tokens = new javax.swing.JMenuItem();
+        reporte_errores = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,10 +112,16 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
 
         jScrollPane3.setViewportView(lista_producciones);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setText("Graficar");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        boton_graficar.setBackground(new java.awt.Color(255, 255, 255));
+        boton_graficar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        boton_graficar.setText("Graficar");
+        boton_graficar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Componentes Lexicos");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setText("Producciones");
 
         javax.swing.GroupLayout panel_opcionesLayout = new javax.swing.GroupLayout(panel_opciones);
         panel_opciones.setLayout(panel_opcionesLayout);
@@ -107,27 +129,40 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_opcionesLayout.createSequentialGroup()
                 .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(boton_graficar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_opcionesLayout.setVerticalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_opcionesLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(boton_graficar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Archivo");
 
         abrir_archivo.setText("Abrir");
         jMenu1.add(abrir_archivo);
+
+        guardar_archivo.setText("Guardar");
+        guardar_archivo.setEnabled(false);
+        jMenu1.add(guardar_archivo);
+
+        menu_nuevo.setText("Nuevo");
+        jMenu1.add(menu_nuevo);
 
         jMenuBar1.add(jMenu1);
 
@@ -137,6 +172,16 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
         jMenu2.add(iniciar_Analisis);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Reportes");
+
+        reporte_tokens.setText("Tokens");
+        jMenu3.add(reporte_tokens);
+
+        reporte_errores.setText("Errores");
+        jMenu3.add(reporte_errores);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -192,39 +237,63 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrir_archivo;
+    private javax.swing.JButton boton_graficar;
+    private javax.swing.JMenuItem guardar_archivo;
     private javax.swing.JMenuItem iniciar_Analisis;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> lista_componentes;
     private javax.swing.JList<String> lista_producciones;
+    private javax.swing.JMenuItem menu_nuevo;
     private javax.swing.JPanel panel_edicion;
     private javax.swing.JPanel panel_opciones;
     private javax.swing.JTabbedPane panel_pestanya;
+    private javax.swing.JMenuItem reporte_errores;
+    private javax.swing.JMenuItem reporte_tokens;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==this.iniciar_Analisis){
-            String texto = lista_texto.get(panel_pestanya.getSelectedIndex()).getText();//cuidado
-            this.analisis_lexico.analizar(texto);
-            this.analisis_sintactico = new AnalisisSintactico(this.analisis_lexico);
-            /*for(Token token:this.analisis_lexico.getToken()){
-                System.out.println(token.getNumero()+".-"+token.getLexema()+" fila: "+token.getLinea()+" columna: "+token.getColumna() +" ID: "+token.getID());
-            }*/
-            analisis_sintactico.analizar();
-
+            iniciarAnalisis();
         }
         else if(e.getSource()==this.abrir_archivo){
+            abrir();
+        }
+        else if(e.getSource()==this.menu_nuevo){
+            nuevo();
+        }
+        else if(e.getSource()==this.guardar_archivo){
+            guardar();
+        }
+        
+    }
+    
+    
+    private void abrir(){
+        Archivo archivo = new Archivo();//nuevo
+        String texto = archivo.abrir();
+        seleccion++;//aumento el indice de la seleccion empieza en -1 asi que se convierte en 0 la primera vez
+        
+        Pestanya pestanya = new Pestanya();
+        pestanya.getText_area().setText(texto);
+        pestanya.setRuta(archivo.getRuta());
+        lista_tab.add(pestanya);
+        panel_pestanya.add(lista_tab.get(seleccion).getPanel());
+        panel_pestanya.setSelectedIndex(seleccion);
+        
+        
+        if(!this.guardar_archivo.isEnabled())//nuevo
+            guardar_archivo.setEnabled(true);
             
-            String texto = new Archivo().abrir();
-            seleccion++;//aumento el indice de la seleccion empieza en -1 asi que se convierte en 0 la primera vez
-            
+            /*
             lista_texto.add(new JTextArea());//creo un nuevo campo de texto y lo meto en una lista
-            //lista_texto.get(seleccion).setPreferredSize(new Dimension(365,420));//le cambio el tamaño
             lista_texto.get(seleccion).setText(texto);//le agrego el texto del documento al cuadro de texto
             
             lista_jscroll.add(new JScrollPane(lista_texto.get(seleccion)));//creo un nuevo jscrollpane y le agrego el jtextarea
@@ -236,8 +305,52 @@ public class Ventana extends javax.swing.JFrame implements ActionListener{
             
             panel_pestanya.add(lista_pestanya.get(seleccion));//agrego la nueva pestaña
             panel_pestanya.setSelectedIndex(seleccion);//pongo focus en la pestaña
-            
+            */
+    }
+    
+    private void nuevo(){
+        seleccion++;
+        lista_tab.add(new Pestanya());
+        panel_pestanya.add(lista_tab.get(seleccion).getPanel());
+        panel_pestanya.setSelectedIndex(seleccion);
+        if(!this.guardar_archivo.isEnabled())//nuevo
+            guardar_archivo.setEnabled(true);
+    }
+    
+    private void guardar(){ 
+        seleccion=this.panel_pestanya.getSelectedIndex();
+        String[] salida = lista_tab.get(seleccion).getText_area().getText().split("\n");//lista_texto.get(seleccion).getText().split("\n");
+        if(lista_tab.get(seleccion).getRuta().isEmpty()){
+            lista_tab.get(seleccion).setRuta(new Archivo().guardar(salida));
+        }else{
+            JOptionPane.showMessageDialog(null,new Archivo().guardarComo(lista_tab.get(seleccion).getRuta(), salida));
         }
-        
+    }
+    
+    private void iniciarAnalisis(){
+            //String texto = lista_texto.get(panel_pestanya.getSelectedIndex()).getText();//cuidado
+            String  texto = lista_tab.get(panel_pestanya.getSelectedIndex()).getText_area().getText();
+            this.analisis_lexico=new AnalisisLexico();
+            this.analisis_lexico.analizar(texto);
+            this.analisis_sintactico = new AnalisisSintactico(this.analisis_lexico);
+            /*for(Token token:this.analisis_lexico.getToken()){
+                System.out.println(token.getNumero()+".-"+token.getLexema()+" fila: "+token.getLinea()+" columna: "+token.getColumna() +" ID: "+token.getID());
+            }*/
+            analisis_sintactico.analizar();
+            DefaultListModel modelo = new DefaultListModel();
+            for(String componente:analisis_sintactico.getComponente()){
+                modelo.addElement(componente);
+            }
+            this.lista_componentes.setModel(modelo);
+            
+            DefaultListModel modelo2 = new DefaultListModel();//nuevo
+            for(String PR:analisis_sintactico.getPR()){//nuevo
+                modelo2.addElement(PR);
+            }
+            this.lista_producciones.setModel(modelo2);//nuevo
+            
+            for(String produccion: analisis_sintactico.getProduccion()){//debug
+                System.out.println(produccion);
+            }        
     }
 }
